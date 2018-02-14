@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace WordWrap
 {
@@ -18,32 +20,27 @@ namespace WordWrap
                 return input;
             }
 
+            int start = 0, end;
             var lines = new StringBuilder();
-            var cursor = 0;
-            while (cursor + maxLength < input.Length)
+
+            while ((end = start + maxLength) < input.Length)
             {
-                var indexOfBlank = input.LastIndexOf(' ', cursor + maxLength);
-                int splitAt;
-                int offset;
+                while (input[end] != ' ' && end > start)
+                    end -= 1;
 
-                if (indexOfBlank > cursor - 1)
-                {
-                    splitAt = indexOfBlank;
-                    offset = 1;
-                }
-                else
-                {
-                    splitAt = cursor + maxLength;
-                    offset = 0;
-                }
+                if (end == start)
+                    end = start + maxLength;
 
-                lines.Append(input.Substring(cursor, splitAt));
+                lines.Append(input.Substring(start, end - start));
                 lines.Append("\n");
-
-                cursor = splitAt + offset;
+                start = end + 1;
             }
 
-            lines.Append(input.Substring(cursor));
+            if (start < input.Length)
+            {
+                lines.Append(input.Substring(start));
+            }
+
             return lines.ToString();
         }
     }

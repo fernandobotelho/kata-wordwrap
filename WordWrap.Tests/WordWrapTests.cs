@@ -25,6 +25,14 @@ namespace WordWrap.Tests
         }
 
         [Fact]
+        public void Wrap_It_LargeString()
+        {
+            var expected = "Fernando\nBotelho de\nAlmeida &\nMarilia\nMesquita\nBotelho";
+            var actual = WordWrap.Wrap("Fernando Botelho de Almeida & Marilia Mesquita Botelho", 10);
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
         public void Wrap_Under_Limit()
         {
             var expected = "Matt and Louise";
